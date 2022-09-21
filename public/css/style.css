@@ -1,0 +1,102 @@
+.title {
+    color: black;
+    text-align: center;
+}
+
+table,
+.form {
+    max-width: 50%;
+    margin: auto;
+}
+
+.background_table {
+    background-color: lightyellow;
+}
+.contenedor{
+    display: flex;
+    flex-direction: row;
+}
+
+.btn_inicio {
+    background-color: lightblue;
+    border-color: transparent;
+    border-radius: 10%;
+    align-items: center;
+    color: black;
+}
+
+.btn_logout  button {
+    background-color:lightblue;
+    border-color: transparent;
+    border-radius: 10%;
+    display: flex;
+    align-items: flex-end;
+   }
+
+.center_button {
+    text-align: center;
+}
+
+.right{
+    margin-left: 70%;
+}
+
+.titleLogin{
+    /* color: blue; */
+    color: black;
+    text-align: left;
+}
+
+.header {
+    color: #36A0FF;
+    font-size: 27px;
+    padding: 10px;
+}
+
+.centrar_form {
+    margin-left: 25%
+}
+
+#id,
+#text,
+#nombre,
+#apellido,
+#avatar,
+#edad,
+#avatar,
+#alias {
+    background-color: lightyellow;
+
+}
+
+.tamaño {
+    width: 40px;
+}
+
+.mail {
+    color: blue;
+    font-weight: bold;
+}
+
+.date {
+    color: brown;
+    font-weight: normal;
+}
+
+.mensaje {
+    color: green;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.avatar {
+    width: 50px;
+}
+
+.background_login{
+    background-color: aquamarine;
+}
+
+.user{
+    text-align: center;
+}
