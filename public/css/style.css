@@ -19,16 +19,19 @@ table,
 
 .btn_inicio {
     background-color: lightblue;
-    border-color: transparent;
-    border-radius: 10%;
+    border-radius: 5%;
     align-items: center;
     color: black;
 }
 
+.btn_inicio a {
+    color: black;
+    text-decoration: none;
+}
+
 .btn_logout  button {
     background-color:lightblue;
-    border-color: transparent;
-    border-radius: 10%;
+    border-radius: 5%;
     display: flex;
     align-items: flex-end;
    }
@@ -42,7 +45,6 @@ table,
 }
 
 .titleLogin{
-    /* color: blue; */
     color: black;
     text-align: left;
 }

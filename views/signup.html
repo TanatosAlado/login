@@ -10,7 +10,7 @@
     <title>Bienvenido!!</title>
 </head>
 <body>
-  <form action="/login" method="POST">
+  <form action="/signup" method="POST">
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
@@ -20,17 +20,20 @@
       
                   <div class="mb-md-5 mt-md-4 pb-5">
                   
-                    <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                    <p class="title-50 mb-5">Por favor, ingrese su usuario para continuar</p>
+                    <h2 class="fw-bold mb-2 text-uppercase">Registro de Usuario</h2>
+                    <p class="title-50 mb-5">Por favor, ingrese los datos solicitados</p>
       
                     <div class="form-outline form-white mb-4">
                       <input type="text"class="form-control form-control-lg" name="username" id="username" placeholder="Usuario" />
                     </div>
                     <div class="form-outline form-white mb-4">
-                      <input type="password"class="form-control form-control-lg" name="password" id="password"placeholder="Contraseña" />
+                      <input type="password"class="form-control form-control-lg" name="password" id="password" placeholder="Contraseña" />
                     </div>
-                    <button class="btn  btn-lg px-5 btn_inicio" type="submit">Ingresar</button>
-                    <button class="btn  btn-lg px-5 btn_inicio" type="button"><a href="./signup">Ir a Registro</a></button>
+                    <div class="form-outline form-white mb-4">
+                      <input type="mail"class="form-control form-control-lg" name="address" id="address" placeholder="Mail" />
+                    </div>
+                    <button class="btn btn-lg px-5 btn_inicio" type="submit">Registro</button>
+                    <button class="btn btn-lg px-5 btn_inicio" type="button"><a href="./login"> Ir a Login</button></a>
                 </div>
               </div>
             </div>

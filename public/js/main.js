@@ -74,7 +74,8 @@ const renderComp = (msj, denormMsjs) => {
 
 //LOGIN-LOGOUT 
 
-fetch ("/getUserName")
+// fetch ("/getUserName")
+fetch ("/loginEnv")
 .then(response => response.json())
  .then (data=>{
     userName=data.user;
