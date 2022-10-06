@@ -117,7 +117,7 @@ document.getElementById("logout").addEventListener
         })
 })
 
- document.getElementById("info").addEventListener
+ document.getElementById("infor").addEventListener
  ('click', (e) => {
      e.preventDefault()
      window.location.href = "/info";
