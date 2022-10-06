@@ -19,6 +19,29 @@ function renderTable(data) {
     table.innerHTML += html;
 }
 
+fetch("/api/info")
+    .then(response => response.json())
+    .then(data => {
+        renderInfo(data);
+    })
+    .catch(error => console.log(error));
+
+function renderInfo(data) {
+    const info = document.getElementById("info");
+    const html = data.map(element => {
+        return (`<br><br><div>
+        PID: ${element.pid}<br><br>
+        VERSION: ${element.version}<br><br>
+        MEMORIA: ${element.memoria}<br><br>
+        SISTEMA OPERATIVO: ${element.sistemaOperativo}<br><br>
+        CARPETA PROYECTO: ${element.carpeta}<br><br>
+        PATH: ${element.path}<br><br>
+        ARGUMENTO: ${element.argumento}<br><br>
+        </div><br><br>`);
+    }).join("");
+    info.innerHTML += html;
+}
+
 const ingresoMensaje = document.getElementById("ingresoMensaje");
 const botonEnviar = document.getElementById("botonEnviar");
 
@@ -94,4 +117,9 @@ document.getElementById("logout").addEventListener
         })
 })
 
+document.getElementById("info").addEventListener
+('click', (e) => {
+    e.preventDefault()
+    window.location.href = "/info";
+})
 

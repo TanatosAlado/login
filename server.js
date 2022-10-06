@@ -7,6 +7,10 @@ const cookieParser=require("cookie-parser")
 const session =require("express-session")
 const MongoStore=require("connect-mongo")
 
+// const { fork } = require('child_process')
+// const child = fork("./child.js")
+
+
 //==================
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require("passport");
@@ -27,29 +31,28 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/', routerProducto);
 
-app.use(cookieParser());
-// app.use(session({
-//     store: MongoStore.create({ mongoUrl: 'mongodb+srv://cristian:Roma2022@cluster0.lohlj66.mongodb.net/ecommerce?retryWrites=true&w=majority' }),
-//     secret: 'TanatosAlado',
-//     resave: true,
-//     saveUninitialized: true,
-//     cookie: {
-//         maxAge: 60 * 10000
-//     }
-// }));
+//  app.use(cookieParser());
+//  app.use(session({
+//      store: MongoStore.create({ mongoUrl: 'mongodb+srv://cristian:Roma2022@cluster0.lohlj66.mongodb.net/ecommerce?retryWrites=true&w=majority' }),
+//      secret: 'TanatosAlado',
+//      resave: true,
+//      saveUninitialized: true,
+//      cookie: {
+//          maxAge: 60 * 10000
+//      }
+//  }));
 
 app.use(session({
-    secret: 'TanatosAlado',
-    resave: false,
-    saveUninitialized: true,
-    store: new MongoStore({
-      mongoUrl: 'mongodb+srv://cristian:Roma2022@cluster0.lohlj66.mongodb.net/ecommerce?retryWrites=true&w=majority',
-      retries: 0,
-      ttl: 10 * 60 , // 10 min
-    }),
-  })
+  secret: 'STRING_TO_SIGN_SESSION_ID',
+  resave: false,
+  saveUninitialized: true,
+  store: new MongoStore({
+    mongoUrl:process.env.URL_BD,
+    retries: 0,
+    ttl: 10 * 60 , // 10 min
+  }),
+})
 );
-
 //============
 
 app.use(passport.initialize());
@@ -110,6 +113,8 @@ app.get('/loginEnv', (req, res) => {
   })
 //============
 
+//============
+
 app.get("/", (req,res)=>{
 
     try{
@@ -126,6 +131,17 @@ app.get("/", (req,res)=>{
     }
 
 })
+
+io.on('connection', async (socket) => {
+  console.log('Usuario conectado');
+  socket.on('enviarMensaje', (msj) => {
+      saveMsjs(msj);
+  })
+
+  socket.emit ('mensajes', await getMsjs());
+})
+
+
 
 // DEFINO EL NOMBRE DE USUARIO DE LA SESSION
 
@@ -168,14 +184,7 @@ app.get('/getUserNameEnv', (req, res) => {
 })
 
 
-io.on('connection', async (socket) => {
-    console.log('Usuario conectado');
-    socket.on('enviarMensaje', (msj) => {
-        saveMsjs(msj);
-    })
 
-    socket.emit ('mensajes', await getMsjs());
-})
 
 // DESLOGUEO DE USUARIO
 
@@ -203,6 +212,28 @@ app.get('/logoutMsj', (req, res) => {
 
 
 // ==============
+app.get("/info", (req,res) => {
+  res.sendFile(__dirname + "/views/info.html");
+})
+
+
+app.get("/api/random", (req,res) => {
+  const losRandom = req.query.num ||  500
+  child.send(losRandom)
+  child.on('message', (msg) => {
+    res.end(msg)
+  })
+
+// res.sendFile(__dirname + "/views/aleatorios.html")
+})
+
+
+// routerProducto.post("/actualizar", isAdmin, (req,res) => {
+//   myWine.updateProduct(req.body.id, req.body)
+//   .then((products) => res.render("productos_id",products))
+// })
+
+
 app.get("/login", (req, res) => {
     const user=req.session.user;
     res.sendFile(__dirname + "/views/login.html");
@@ -237,10 +268,31 @@ app.get("/login", (req, res) => {
 // ==============
 
 
+// const args = parseArgs(process.argv.slice(2));
+// const args = process.argv.slice(2);
+// console.log(args)
 
-const PORT = process.env.PORT || 8080;
+// const PORT = args.length > 0 ? args[0] : 8080;
 
-const server = httpserver.listen(PORT, () => {
+//const PORT = process.env.PORT || 8080;
+
+const yargs = require("yargs");
+const args = yargs(process.argv.slice(2))
+  
+  .alias({
+    m: "modo",
+    p: "puerto",
+    d: "debug"
+  })
+  .default({
+    modo: "prod",
+    puerto: 8080,
+    debug: false
+  })
+  .argv
+
+
+  const server = httpserver.listen(args.p, () => {
     console.log(`Server is running on port: ${server.address().port}`);
 });
 server.on('error', error => console.log(`error running server: ${error}`));
