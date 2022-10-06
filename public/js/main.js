@@ -117,9 +117,9 @@ document.getElementById("logout").addEventListener
         })
 })
 
-document.getElementById("info").addEventListener
-('click', (e) => {
-    e.preventDefault()
-    window.location.href = "/info";
-})
+ document.getElementById("info").addEventListener
+ ('click', (e) => {
+     e.preventDefault()
+     window.location.href = "/info";
+ })
 

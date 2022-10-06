@@ -7,8 +7,8 @@ const cookieParser=require("cookie-parser")
 const session =require("express-session")
 const MongoStore=require("connect-mongo")
 
-// const { fork } = require('child_process')
-// const child = fork("./child.js")
+const { fork } = require('child_process')
+const child = fork("./child.js")
 
 
 //==================
@@ -43,7 +43,7 @@ app.use('/api/', routerProducto);
 //  }));
 
 app.use(session({
-  secret: 'STRING_TO_SIGN_SESSION_ID',
+  secret: 'TanatosAlado',
   resave: false,
   saveUninitialized: true,
   store: new MongoStore({
@@ -60,13 +60,15 @@ app.use(passport.session());
 
 
 passport.use("login", new LocalStrategy(async (username, password, done) => {
-    const user = await User.findOne({ username });
-    const passHash = user.password;
-     if (!user || !comparePassword(password, passHash)) {
-       return done(null, null, { message: "Usuario o contraseña incorrecto" });
-     }
-    return done(null, user);
-  }));
+  const user = await User.findOne({ username });
+  if (user==""){
+  const passHash = user.password;
+   if (!user || !comparePassword(password, passHash)) {
+     return done(null, null, { message: "Invalid username or password" });
+   }
+  }
+  return done(null, user);
+}));
 
 
 passport.use("signup", new LocalStrategy({

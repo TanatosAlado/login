@@ -1,6 +1,6 @@
 
 //CONEXION A LA DB EN MONGO
-
+require("dotenv").config()
 const config = {
     mongoDb: {
         url: process.env.URL_BD,
