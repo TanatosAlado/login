@@ -51,7 +51,7 @@ const args = yargs(process.argv.slice(2))
     d: "debug",
   })
   .default({
-    modo: "prod",
+    modo: "FORK",
     puerto: 8080,
     debug: false
   })
