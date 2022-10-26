@@ -27,6 +27,11 @@ const cpuNum = cpus().length;
 const app = express();
 const httpserver = http(app)
 const io = new ioServer(httpserver)
+const compression = require('compression')
+const gzipMiddleware = compression();
+app.use(compression())
+
+
 
 // app.use(express.static('public'));
 
@@ -266,7 +271,7 @@ app.get('/logoutMsj', (req, res) => {
 
 
 // ==============
-app.get("/info", (req,res) => {
+app.get("/info", gzipMiddleware, (req,res) => {
   res.sendFile(__dirname + "/views/info.html");
 })
 
