@@ -11,7 +11,7 @@ const { fork } = require('child_process')
 const child = fork("./child.js")
 
 
-//==================
+
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require("passport");
 const { comparePassword, hashPassword } = require("./utils")
@@ -19,28 +19,80 @@ const User=require("./src/schema/schemaUser.js")
 
 const { Types } = require("mongoose");
 //==================
+const cluster = require("cluster");
+const {cpus} = require('os');
+const cpuNum = cpus().length;
+//==================
 
 const app = express();
 const httpserver = http(app)
 const io = new ioServer(httpserver)
 
 // app.use(express.static('public'));
+
+
+
+// const args = parseArgs(process.argv.slice(2));
+// const args = process.argv.slice(2);
+// console.log(args)
+
+// const PORT = args.length > 0 ? args[0] : 8080;
+
+//const PORT = process.env.PORT || 8080;
+
+
+
+const yargs = require("yargs");
+const args = yargs(process.argv.slice(2))
+
+  .alias({
+    m: "modo",
+    p: "puerto",
+    d: "debug",
+  })
+  .default({
+    modo: "prod",
+    puerto: 8080,
+    debug: false
+  })
+  .argv
+
+const modoCluster = args.m === 'CLUSTER';
+
+if(modoCluster){
+  console.log("Se iniciará en modo CLUSTER")
+}
+else{
+  console.log("Se iniciará en modo FORK")
+}
+
+/////////////////////////////////////////
+
+if (modoCluster && cluster.isPrimary) {
+  console.log(`Cluster iniciado. CPUS: ${cpuNum}`);
+  console.log(`PID: ${process.pid}`);
+  for (let i = 0; i < cpuNum; i++) {
+    cluster.fork();
+  }
+
+  cluster.on("exit", worker => {
+    console.log(`${new Date().toLocaleString()}: Worker ${worker.process.pid} died`);
+    cluster.fork();
+  });
+} else {
+  const app = express();
+  const httpserver = http(app)
+  const io = new ioServer(httpserver)
+
+
+/////////////////////////////////////////////INICIO
+
 app.use("/public", express.static('./public/'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/', routerProducto);
 
-//  app.use(cookieParser());
-//  app.use(session({
-//      store: MongoStore.create({ mongoUrl: 'mongodb+srv://cristian:Roma2022@cluster0.lohlj66.mongodb.net/ecommerce?retryWrites=true&w=majority' }),
-//      secret: 'TanatosAlado',
-//      resave: true,
-//      saveUninitialized: true,
-//      cookie: {
-//          maxAge: 60 * 10000
-//      }
-//  }));
 
 app.use(session({
   secret: 'TanatosAlado',
@@ -269,33 +321,19 @@ app.get("/login", (req, res) => {
   });
 // ==============
 
-
-// const args = parseArgs(process.argv.slice(2));
-// const args = process.argv.slice(2);
-// console.log(args)
-
-// const PORT = args.length > 0 ? args[0] : 8080;
-
-//const PORT = process.env.PORT || 8080;
-
-const yargs = require("yargs");
-const args = yargs(process.argv.slice(2))
-  
-  .alias({
-    m: "modo",
-    p: "puerto",
-    d: "debug"
-  })
-  .default({
-    modo: "prod",
-    puerto: 8080,
-    debug: false
-  })
-  .argv
+/////////////////////////////////////////////FIN
 
 
   const server = httpserver.listen(args.p, () => {
     console.log(`Server is running on port: ${server.address().port}`);
 });
 server.on('error', error => console.log(`error running server: ${error}`));
+
+}
+////////////////////////////////////////////////
+
+//   const server = httpserver.listen(args.p, () => {
+//     console.log(`Server is running on port: ${server.address().port}`);
+// });
+// server.on('error', error => console.log(`error running server: ${error}`));
 

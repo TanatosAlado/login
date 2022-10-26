@@ -26,21 +26,22 @@ fetch("/api/info")
     })
     .catch(error => console.log(error));
 
-function renderInfo(data) {
-    const info = document.getElementById("info");
-    const html = data.map(element => {
-        return (`<br><br><div>
-        PID: ${element.pid}<br><br>
-        VERSION: ${element.version}<br><br>
-        MEMORIA: ${element.memoria}<br><br>
-        SISTEMA OPERATIVO: ${element.sistemaOperativo}<br><br>
-        CARPETA PROYECTO: ${element.carpeta}<br><br>
-        PATH: ${element.path}<br><br>
-        ARGUMENTO: ${element.argumento}<br><br>
-        </div><br><br>`);
-    }).join("");
-    info.innerHTML += html;
-}
+    function renderInfo(data) {
+        const info = document.getElementById("info");
+        const html = data.map(element => {
+            return (`<br><br><div>
+            PID: ${element.pid}<br><br>
+            VERSION: ${element.version}<br><br>
+            MEMORIA: ${element.memoria}<br><br>
+            SISTEMA OPERATIVO: ${element.sistemaOperativo}<br><br>
+            CARPETA PROYECTO: ${element.carpeta}<br><br>
+            PATH: ${element.path}<br><br>
+            ARGUMENTO: ${element.argumento}<br><br>
+            CORES: ${element.procesadores}<br><br>
+            </div><br><br>`);
+        }).join("");
+        info.innerHTML += html;
+    }
 
 const ingresoMensaje = document.getElementById("ingresoMensaje");
 const botonEnviar = document.getElementById("botonEnviar");
