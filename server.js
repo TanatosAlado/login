@@ -40,7 +40,7 @@ const {
 
 const NODE_ENV = process.env.NODE_ENV || "development"
 
-const logger = NODE_ENV === "production"
+const warn = NODE_ENV === "production"
 ? loggerProd
 : loggerDev
 ////////////////////////////Fin Winston
@@ -338,6 +338,13 @@ app.get("/login", (req, res) => {
       req.session.user = req.user;
       res.redirect('/');
   });
+
+
+
+  app.get("*", (req,res) => {
+    logger.warn("warn", `Ruta no encontrada ${req.url}`)
+    res.status(400).send(`Ruta no encontrada ${req.url}`)
+  })
 // ==============
 
 /////////////////////////////////////////////FIN
