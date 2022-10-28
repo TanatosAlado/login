@@ -31,6 +31,20 @@ const compression = require('compression')
 const gzipMiddleware = compression();
 app.use(compression())
 
+////////////////////////////Inicio Winston
+
+const {
+  loggerDev,
+  loggerProd
+} = require("./logger_config")
+
+const NODE_ENV = process.env.NODE_ENV || "development"
+
+const logger = NODE_ENV === "production"
+? loggerProd
+: loggerDev
+////////////////////////////Fin Winston
+
 
 
 // app.use(express.static('public'));
