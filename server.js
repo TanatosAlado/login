@@ -6,9 +6,19 @@ const {saveMsjs, getMsjs}=require ("./src/controllers/mensajes.js");
 const cookieParser=require("cookie-parser")
 const session =require("express-session")
 const MongoStore=require("connect-mongo")
-
+const compression = require("compression");
+const gzipMiddleware = compression();
 const { fork } = require('child_process')
 const child = fork("./child.js")
+const {
+  loggerDev,
+  loggerProd
+} = require("./logger_config");
+
+const NODE_ENV = process.env.NODE_ENV || "development";
+const logger = NODE_ENV === "production"
+? loggerProd
+: loggerDev
 
 
 
@@ -27,25 +37,6 @@ const cpuNum = cpus().length;
 const app = express();
 const httpserver = http(app)
 const io = new ioServer(httpserver)
-const compression = require('compression')
-const gzipMiddleware = compression();
-app.use(compression())
-
-////////////////////////////Inicio Winston
-
-const {
-  loggerDev,
-  loggerProd
-} = require("./logger_config")
-
-const NODE_ENV = process.env.NODE_ENV || "development"
-
-const warn = NODE_ENV === "production"
-? loggerProd
-: loggerDev
-////////////////////////////Fin Winston
-
-
 
 // app.use(express.static('public'));
 
@@ -285,7 +276,8 @@ app.get('/logoutMsj', (req, res) => {
 
 
 // ==============
-app.get("/info", gzipMiddleware, (req,res) => {
+app.get("/info",gzipMiddleware, (req,res) => {
+  logger.log("info",`Ingreso a ruta ${req.url}`)
   res.sendFile(__dirname + "/views/info.html");
 })
 
@@ -338,14 +330,13 @@ app.get("/login", (req, res) => {
       req.session.user = req.user;
       res.redirect('/');
   });
-
-
-
-  app.get("*", (req,res) => {
-    logger.warn("warn", `Ruta no encontrada ${req.url}`)
-    res.status(400).send(`Ruta no encontrada ${req.url}`)
-  })
 // ==============
+
+// Ruta por defecto: Recurso no encontrado
+app.get("*", (req, res) => {
+  logger.log("warn",`Ruta no encontrada ${req.url}`)
+  res.status(400).send(`Ruta no encontrada ${req.url}`);
+});
 
 /////////////////////////////////////////////FIN
 
@@ -363,3 +354,7 @@ server.on('error', error => console.log(`error running server: ${error}`));
 // });
 // server.on('error', error => console.log(`error running server: ${error}`));
 
+// server.on("error", (err) => {
+//   // Manejo de errores del servidor
+//   logger.log("error",`Ocurrio un error al iniciar el servidor ${err}`)
+// });

@@ -72,8 +72,8 @@ const renderMsj = (msj) => {
         const html = ` <article class=text-center>
         <span class="id mail">${element._doc.author.id}</span><span class="date">[${element._doc.author.timestamp}]:</span><span class="mensaje">${element._doc.text}</span><img src="${element._doc.author.avatar}" alt="avatar" class="avatar">
                         </article>`;
-        const mensajes = document.getElementById("mensajes");
-        mensajes.innerHTML += html;
+            const mensajes = document.getElementById("mensajes");
+            mensajes.innerHTML += html;
     })
 }
 
