@@ -282,15 +282,15 @@ app.get("/info",gzipMiddleware, (req,res) => {
 })
 
 
-app.get("/api/random", (req,res) => {
-  const losRandom = req.query.num ||  500
-  child.send(losRandom)
-  child.on('message', (msg) => {
-    res.end(msg)
-  })
 
-// res.sendFile(__dirname + "/views/aleatorios.html")
-})
+//   //Desactivamos la ruta /random
+// app.get("/api/random", (req,res) => {
+//   const losRandom = req.query.num ||  500
+//   child.send(losRandom)
+//   child.on('message', (msg) => {
+//     res.end(msg)
+//   })
+//})
 
 
 // routerProducto.post("/actualizar", isAdmin, (req,res) => {

@@ -27,6 +27,7 @@ fetch("/api/info")
     .catch(error => console.log(error));
 
     function renderInfo(data) {
+        // console.log("Ejecución con Console Log")
         const info = document.getElementById("info");
         const html = data.map(element => {
             return (`<br><br><div>
