@@ -20,7 +20,8 @@ const logger = NODE_ENV === "production"
 ? loggerProd
 : loggerDev
 
-
+//variable de prueba para generar errores
+const cantidadProductos = 8
 
 
 const LocalStrategy = require('passport-local').Strategy;
@@ -181,7 +182,9 @@ app.get('/loginEnv', (req, res) => {
 //============
 
 app.get("/", (req,res)=>{
-
+    if(cantidadProductos > 5){
+      logger.log("error", "Se excedieron la cantidad de productos a mostrar")
+    }
     try{
         if (req.session.user){
            res.sendFile(__dirname + ('/public/index.html'))
@@ -253,6 +256,9 @@ app.get('/getUserNameEnv', (req, res) => {
 // DESLOGUEO DE USUARIO
 
 app.get('/logout', (req, res) => {
+  if (cantidadProductos > 5){
+    logger.log("error", "Se superó la cantidad maxima de productos a mostrar")
+  }
     try {
         req.session.destroy((err) => {
             if (err) {

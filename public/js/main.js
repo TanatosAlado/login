@@ -5,7 +5,7 @@ fetch("/api/productos-test")
     .then(data => {
         renderTable(data);
     })
-    // .catch(error => console.log(error));
+    .catch(error => console.log(error));
 
 function renderTable(data) {
     const table = document.getElementById("table");
