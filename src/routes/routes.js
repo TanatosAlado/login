@@ -3,6 +3,7 @@ const {createFakeProducts}=require("../controllers/products.js")
 const {fork}=require("child_process")
 const child= fork("./child.js")
 
+
 const routerProducto = Router();
 
 routerProducto.
@@ -10,9 +11,14 @@ routerProducto.
     .get(async (req, res) => {
 
         const products = await createFakeProducts();
-        if (products.length > 0) {
-            res.status(200).json(products);
-        } else {
+        try{
+            if (products.length > 0) {
+                res.status(200).json(products);
+            } else {
+                res.status(404).send({ message: "Productos no encontrado" });
+            }
+        }
+        catch {
             res.status(404).send({ message: "Productos no encontrado" });
         }
     })

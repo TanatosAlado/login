@@ -12,6 +12,7 @@
   "dependencies": {
     "@faker-js/faker": "^7.5.0",
     "author": "^1.0.0",
+    "autocannon": "^7.10.0",
     "bcrypt": "^5.0.1",
     "child_process": "^1.0.2",
     "compression": "^1.7.4",

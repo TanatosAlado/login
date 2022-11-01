@@ -11,7 +11,7 @@ const createFakeProducts = async() => {
         }
         products.push(product);
     }
-    return products;
+    // return products;
 }
 
 module.exports = { createFakeProducts }

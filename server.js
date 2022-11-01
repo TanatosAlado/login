@@ -22,6 +22,7 @@ const logger = NODE_ENV === "production"
 
 
 
+
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require("passport");
 const { comparePassword, hashPassword } = require("./utils")
@@ -201,11 +202,10 @@ io.on('connection', async (socket) => {
   socket.on('enviarMensaje', (msj) => {
       saveMsjs(msj);
   })
-
-  socket.emit ('mensajes', await getMsjs());
+    socket.emit ('mensajes', await getMsjs());  
 })
 
-
+|
 
 // DEFINO EL NOMBRE DE USUARIO DE LA SESSION
 

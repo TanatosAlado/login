@@ -5,7 +5,7 @@ fetch("/api/productos-test")
     .then(data => {
         renderTable(data);
     })
-    .catch(error => console.log(error));
+    // .catch(error => console.log(error));
 
 function renderTable(data) {
     const table = document.getElementById("table");
@@ -22,12 +22,12 @@ function renderTable(data) {
 fetch("/api/info")
     .then(response => response.json())
     .then(data => {
+        // console.log(data)
         renderInfo(data);
     })
     .catch(error => console.log(error));
 
     function renderInfo(data) {
-        // console.log("Ejecución con Console Log")
         const info = document.getElementById("info");
         const html = data.map(element => {
             return (`<br><br><div>
@@ -97,7 +97,7 @@ const renderComp = (msj, denormMsjs) => {
     comp.innerHTML = `(Compresion: ${compresion}%)`;
 }
 
-//LOGIN-LOGOUT 
+//LOGIN-LOGOUT
 
 // fetch ("/getUserName")
 fetch ("/loginEnv")
